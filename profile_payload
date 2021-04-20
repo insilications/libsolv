@@ -1,0 +1,3 @@
+ctest --parallel 16 -V --progress || :
+make -j1 check || :
+make -j1 test  || :
