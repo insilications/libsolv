@@ -15,30 +15,151 @@ Requires: libsolv-bin = %{version}-%{release}
 Requires: libsolv-data = %{version}-%{release}
 Requires: libsolv-lib = %{version}-%{release}
 Requires: libsolv-man = %{version}-%{release}
+Requires: libsolv-python = %{version}-%{release}
+Requires: libsolv-python3 = %{version}-%{release}
+BuildRequires : Flask
 BuildRequires : Sphinx
+BuildRequires : acl-dev
+BuildRequires : acl-staticdev
+BuildRequires : automake
+BuildRequires : automake-dev
+BuildRequires : binutils-dev
+BuildRequires : binutils-extras
+BuildRequires : bison
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
 BuildRequires : bzip2-dev
 BuildRequires : bzip2-staticdev
 BuildRequires : check-dev
+BuildRequires : compat-lua-53
+BuildRequires : compat-lua-53-abi
+BuildRequires : compat-lua-53-bin
+BuildRequires : compat-lua-53-dev
+BuildRequires : compat-lua-53-lib
+BuildRequires : compat-lua-53-man
+BuildRequires : compat-lua-53-staticdev
+BuildRequires : dbus-dev
+BuildRequires : dbus-glib
+BuildRequires : dbus-glib-dev
+BuildRequires : dejagnu
+BuildRequires : docbook-utils
+BuildRequires : docbook-xml
 BuildRequires : doxygen
+BuildRequires : elfutils-dev
 BuildRequires : expat-dev
 BuildRequires : expat-staticdev
+BuildRequires : expect
+BuildRequires : fakechroot
+BuildRequires : fakechroot-dev
+BuildRequires : fakechroot-staticdev
+BuildRequires : file
+BuildRequires : file-abi
+BuildRequires : file-bin
+BuildRequires : file-data
+BuildRequires : file-dev
+BuildRequires : file-lib
+BuildRequires : file-license
+BuildRequires : file-man
+BuildRequires : flex
+BuildRequires : gcc
+BuildRequires : gcc-abi
+BuildRequires : gcc-dev
+BuildRequires : gcc-dev32
+BuildRequires : gcc-doc
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libs-math
+BuildRequires : gcc-libstdc++32
+BuildRequires : gcc-libubsan
+BuildRequires : gcc-locale
+BuildRequires : gdb
+BuildRequires : gdb-dev
+BuildRequires : gettext-bin
+BuildRequires : git
+BuildRequires : glib
+BuildRequires : glib-dev
+BuildRequires : glibc-abi
+BuildRequires : glibc-bench
+BuildRequires : glibc-bin
+BuildRequires : glibc-dev
+BuildRequires : glibc-dev32
+BuildRequires : glibc-doc
+BuildRequires : glibc-extras
+BuildRequires : glibc-lib-avx2
+BuildRequires : glibc-libc32
+BuildRequires : glibc-locale
+BuildRequires : glibc-nscd
+BuildRequires : glibc-staticdev
+BuildRequires : glibc-utils
+BuildRequires : gmp-dev
+BuildRequires : gmp-staticdev
+BuildRequires : gnupg
+BuildRequires : gpgme
+BuildRequires : gpgme-dev
+BuildRequires : graphviz
+BuildRequires : guile
+BuildRequires : json-c
+BuildRequires : json-c-dev
+BuildRequires : json-c-staticdev
+BuildRequires : libarchive
+BuildRequires : libarchive-dev
+BuildRequires : libarchive-staticdev
+BuildRequires : libassuan-dev
+BuildRequires : libcap
+BuildRequires : libcap-dev
+BuildRequires : libcomps-dev
+BuildRequires : libedit
+BuildRequires : libedit-dev
+BuildRequires : libffi-dev
+BuildRequires : libffi-staticdev
+BuildRequires : libgcc1
+BuildRequires : libgcrypt
+BuildRequires : libgcrypt-dev
+BuildRequires : libmodulemd
+BuildRequires : libmodulemd-dev
+BuildRequires : libmodulemd-staticdev
+BuildRequires : librepo-dev
+BuildRequires : librepo-staticdev
+BuildRequires : libsolv-dev
+BuildRequires : libsolv-staticdev
+BuildRequires : libstdc++
+BuildRequires : libtool
+BuildRequires : libtool-dev
+BuildRequires : libunwind
+BuildRequires : libunwind-dev
 BuildRequires : libxml2-dev
 BuildRequires : libxml2-staticdev
 BuildRequires : lz4-dev
 BuildRequires : lz4-staticdev
 BuildRequires : lzo-dev
 BuildRequires : lzo-staticdev
+BuildRequires : m4
+BuildRequires : nettle-dev
+BuildRequires : nettle-staticdev
+BuildRequires : nose
+BuildRequires : nspr-dev
+BuildRequires : openssl-dev
+BuildRequires : openssl-staticdev
 BuildRequires : pkg-config
+BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(expat)
 BuildRequires : pkgconfig(liblzma)
 BuildRequires : pkgconfig(rpm)
+BuildRequires : popt
 BuildRequires : popt-dev
 BuildRequires : python3-dev
 BuildRequires : python3-staticdev
+BuildRequires : rpm
+BuildRequires : rpm-dev
+BuildRequires : smartcols
+BuildRequires : sqlite-autoconf
+BuildRequires : sqlite-autoconf-dev
+BuildRequires : sqlite-autoconf-staticdev
+BuildRequires : swig
+BuildRequires : unzip
+BuildRequires : xattr
 BuildRequires : xz-dev
 BuildRequires : xz-staticdev
+BuildRequires : zip
 BuildRequires : zlib
 BuildRequires : zlib-dev
 BuildRequires : zlib-staticdev
@@ -101,13 +222,22 @@ Group: Default
 man components for the libsolv package.
 
 
-%package staticdev
-Summary: staticdev components for the libsolv package.
+%package python
+Summary: python components for the libsolv package.
 Group: Default
-Requires: libsolv-dev = %{version}-%{release}
+Requires: libsolv-python3 = %{version}-%{release}
 
-%description staticdev
-staticdev components for the libsolv package.
+%description python
+python components for the libsolv package.
+
+
+%package python3
+Summary: python3 components for the libsolv package.
+Group: Default
+Requires: python3-core
+
+%description python3
+python3 components for the libsolv package.
 
 
 %prep
@@ -120,7 +250,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1618909594
+export SOURCE_DATE_EPOCH=1618980685
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -173,19 +303,20 @@ export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
 export FCFLAGS="${FCFLAGS_GENERATE}"
 export LDFLAGS="${LDFLAGS_GENERATE}"
-%cmake .. -DENABLE_COMPLEX_DEPS=YES \
--DENABLE_RPMDB=YES \
--DENABLE_RPMDB_BYRPMHEADER=YES \
--DENABLE_RPMDB_LIBRPM=YES \
--DENABLE_RPMPKG_LIBRPM=YES \
--DENABLE_RPMMD=YES \
+%cmake .. -DENABLE_COMPLEX_DEPS=ON \
+-DENABLE_RPMDB=ON \
+-DENABLE_RPMDB_BYRPMHEADER=ON \
+-DENABLE_RPMDB_LIBRPM=ON \
+-DENABLE_RPMPKG_LIBRPM=ON \
+-DENABLE_RPMMD=ON \
 -DENABLE_LZMA_COMPRESSION=yes \
 -DENABLE_ZCHUNK_COMPRESSION=OFF \
--DENABLE_STATIC=ON \
+-DENABLE_STATIC=OFF \
 -DENABLE_LZMA_COMPRESSION=ON \
 -DENABLE_BZIP2_COMPRESSION=ON \
 -DENABLE_ZSTD_COMPRESSION=ON \
--DWITH_LIBXML2=ON
+-DWITH_LIBXML2=ON \
+-DENABLE_PYTHON=ON
 make  %{?_smp_mflags}
 
 ctest --parallel 16 -V --progress || :
@@ -201,25 +332,26 @@ export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}"
 export FCFLAGS="${FCFLAGS_USE}"
 export LDFLAGS="${LDFLAGS_USE}"
-%cmake .. -DENABLE_COMPLEX_DEPS=YES \
--DENABLE_RPMDB=YES \
--DENABLE_RPMDB_BYRPMHEADER=YES \
--DENABLE_RPMDB_LIBRPM=YES \
--DENABLE_RPMPKG_LIBRPM=YES \
--DENABLE_RPMMD=YES \
+%cmake .. -DENABLE_COMPLEX_DEPS=ON \
+-DENABLE_RPMDB=ON \
+-DENABLE_RPMDB_BYRPMHEADER=ON \
+-DENABLE_RPMDB_LIBRPM=ON \
+-DENABLE_RPMPKG_LIBRPM=ON \
+-DENABLE_RPMMD=ON \
 -DENABLE_LZMA_COMPRESSION=yes \
 -DENABLE_ZCHUNK_COMPRESSION=OFF \
--DENABLE_STATIC=ON \
+-DENABLE_STATIC=OFF \
 -DENABLE_LZMA_COMPRESSION=ON \
 -DENABLE_BZIP2_COMPRESSION=ON \
 -DENABLE_ZSTD_COMPRESSION=ON \
--DWITH_LIBXML2=ON
+-DWITH_LIBXML2=ON \
+-DENABLE_PYTHON=ON
 make  %{?_smp_mflags}
 fi
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1618909594
+export SOURCE_DATE_EPOCH=1618980685
 rm -rf %{buildroot}
 pushd clr-build
 %make_install
@@ -316,7 +448,9 @@ popd
 /usr/share/man/man3/libsolv-pool.3
 /usr/share/man/man3/libsolv.3
 
-%files staticdev
+%files python
 %defattr(-,root,root,-)
-/usr/lib64/libsolv.a
-/usr/lib64/libsolvext.a
+
+%files python3
+%defattr(-,root,root,-)
+/usr/lib/python3*/*
